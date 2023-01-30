@@ -17,12 +17,12 @@ export const Container = styled.View<Props>`
   padding: 20px;
   border-radius: 10px;
 
-  margin-top: 32px;
-
-  ${({ theme, isAboveAverage }) => css`
+  ${({ theme, isAboveAverage, isFullscreen }) => css`
     background-color: ${isAboveAverage
       ? theme.COLORS.GREEN_200
       : theme.COLORS.RED_200};
+
+    margin-top: ${isFullscreen ? '0px' : '32px'};
   `}
 `;
 
@@ -51,7 +51,7 @@ export const ButtonOpen = styled.TouchableOpacity`
 export const ButtonBack = styled.TouchableOpacity`
   position: absolute;
   left: 10px;
-  top: -10px;
+  top: 5px;
 `;
 
 export const IconOpen = styled(ArrowUpRight).attrs(() => ({

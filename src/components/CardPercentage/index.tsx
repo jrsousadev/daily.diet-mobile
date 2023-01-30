@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import { useEffect } from "react";
 import { useState } from "react";
 import { useTheme } from "styled-components/native";
 
@@ -19,6 +20,16 @@ export function CardPercentage({
 
   const theme = useTheme();
   const navigate = useNavigation();
+
+  useEffect(() => {
+    if (percentage <= 50) {
+      setIsAboveAverage(false)
+    } 
+    
+    if (percentage > 50) {
+      setIsAboveAverage(true)
+    }
+  }, [percentage])
 
   const handleBack = () => {
     navigate.goBack();
