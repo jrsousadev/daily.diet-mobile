@@ -6,76 +6,20 @@ import moment from "moment";
 import { CardPercentage } from "@components/CardPercentage";
 import { Button } from "@components/Button";
 import { Plus } from "phosphor-react-native";
-import { SectionList, Text } from "react-native";
+import { SectionList } from "react-native";
 import { CardFeed } from "@components/CardFeed";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
+import { DATA } from "@storage/Feeds";
+import { formattedFeedsToDate, MeasureDiet } from "../../domain/Feed";
 
 export function HomeScreen() {
   const theme = useTheme();
   const navigate = useNavigation();
 
-  const DATA = [
-    {
-      title: "12.08.22",
-      data: [
-        {
-          createdAt: new Date(),
-          name: "X-tudo",
-          description: "",
-          insideDiet: false,
-        },
-        {
-          createdAt: new Date(),
-          name: "Whey protein com leite",
-          description: "",
-          insideDiet: true,
-        },
-        {
-          createdAt: new Date(),
-          name: "Salada cesar com frango Salada cesar com frango Salada cesar com frango",
-          description: "",
-          insideDiet: true,
-        },
-        {
-          createdAt: new Date(),
-          name: "Vitamina de banana com",
-          description: "",
-          insideDiet: true,
-        },
-      ],
-    },
-    {
-      title: "11.08.22",
-      data: [
-        {
-          createdAt: new Date(),
-          name: "X-tudo",
-          description: "",
-          insideDiet: false,
-        },
-        {
-          createdAt: new Date(),
-          name: "Whey protein com leite",
-          description: "",
-          insideDiet: true,
-        },
-        {
-          createdAt: new Date(),
-          name: "Salada cesar com frango Salada cesar com frango Salada cesar com frango",
-          description: "",
-          insideDiet: true,
-        },
-        {
-          createdAt: new Date(),
-          name: "Vitamina de banana com",
-          description: "",
-          insideDiet: true,
-        },
-      ],
-    },
-  ];
+  const feedsFormatted = formattedFeedsToDate(DATA);
+  const infosDiet = MeasureDiet(DATA);
 
   return (
     <SafeAreaView
@@ -99,7 +43,7 @@ export function HomeScreen() {
 
         <CardPercentage
           onOpen={() => navigate.navigate("static")}
-          percentage={90.86}
+          percentage={infosDiet.percentage}
         />
 
         <S.TitleFeed>Refeições</S.TitleFeed>
@@ -110,7 +54,7 @@ export function HomeScreen() {
         />
 
         <SectionList
-          sections={DATA}
+          sections={feedsFormatted}
           keyExtractor={(item, index) => item.name + index}
           renderItem={({ item }) => (
             <CardFeed
