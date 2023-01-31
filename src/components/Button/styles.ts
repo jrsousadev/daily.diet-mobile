@@ -32,7 +32,7 @@ export const Title = styled.Text<Props>`
   ${({ theme, type }) => css`
     font-size: ${theme.FONT_SIZE.MD}px;
     color: ${type === "PRIMARY" ? theme.COLORS.WHITE : theme.COLORS.BLACK};
-    font-family: ${theme.FONT_FAMILY.REGULAR};
+    font-family: ${theme.FONT_FAMILY.BOLD};
   `};
 
   text-align: center;

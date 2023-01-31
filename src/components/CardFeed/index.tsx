@@ -9,7 +9,7 @@ type Props = TouchableOpacityProps & {
 
 export function CardFeed({ hour, feed, insideDiet, ...rest }: Props) {
   return (
-    <S.Touchable>
+    <S.Touchable {...rest}>
       <S.Container>
         <S.Hour>{hour}</S.Hour>
         <S.Feed numberOfLines={1}>{feed}</S.Feed>
