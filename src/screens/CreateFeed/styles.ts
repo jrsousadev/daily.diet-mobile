@@ -8,6 +8,7 @@ export const Container = styled.View`
   padding-left: 24px;
   padding-right: 24px;
   padding-top: 40px;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.05);
 
   ${({ theme }) => css`
     background-color: ${theme.COLORS.WHITE};

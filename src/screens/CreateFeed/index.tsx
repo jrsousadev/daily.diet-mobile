@@ -12,6 +12,7 @@ import { Alert } from "react-native";
 import { FeedDTO } from "@domain/Feed";
 import { createFeed } from "@storage/feed/createFeed";
 import { useNavigation } from "@react-navigation/native";
+import { generateUUID } from "@utils/generateUUID";
 
 export function CreateFeed() {
   const theme = useTheme();
@@ -54,6 +55,7 @@ export function CreateFeed() {
       }
 
       const newFeed: FeedDTO = {
+        id: generateUUID(32),
         name,
         description,
         insideDiet: isInsideDiet,
