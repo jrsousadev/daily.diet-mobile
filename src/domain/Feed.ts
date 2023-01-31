@@ -8,7 +8,7 @@ export type FeedDTO = {
 };
 
 export type ObjectFeedList = {
-  title: string;
+  date: Date;
   data: FeedDTO[];
 };
 
@@ -17,20 +17,20 @@ export const formattedFeedsToDate = (data: FeedDTO[]) => {
   const arrayFormatted: any[] = [];
 
   data.forEach((feed) => {
-    const date = moment(feed.createdAt).format("DD.MM.YYYY");
+    const dateInString = moment(feed.createdAt).format("YYYY-MM-DD");
 
-    if (!dates.includes(date)) {
-      dates.push(date);
+    if (!dates.includes(dateInString)) {
+      dates.push(dateInString);
     }
   });
 
   dates.forEach((dateString) => {
     let object: any = {};
-    object.title = dateString;
+    object.date = new Date(`${dateString}T10:00:00`);
     object.data = [];
 
     data.forEach((feed) => {
-      if (moment(feed.createdAt).format("DD.MM.YYYY") === dateString) {
+      if (moment(feed.createdAt).format("YYYY-MM-DD") === dateString) {
         object.data.push(feed);
       }
     });
@@ -38,7 +38,14 @@ export const formattedFeedsToDate = (data: FeedDTO[]) => {
     arrayFormatted.push(object);
   });
 
-  return arrayFormatted;
+  const sortedArray = arrayFormatted.sort((a, b) => {
+    const dateA: any = new Date(a.date);
+    const dateB: any = new Date(b.date);
+
+    return dateB - dateA;
+  });
+
+  return sortedArray;
 };
 
 export const MeasureDiet = (data: FeedDTO[]) => {
@@ -59,7 +66,7 @@ export const MeasureDiet = (data: FeedDTO[]) => {
   const isNan = isNaN(percentage);
 
   return {
-    percentage: isNan ? 0 : percentage,
+    percentage: isNan ? 0 : percentage.toFixed(2),
     notDiet: notDiet.length,
     inDiet: inDiet.length,
   };

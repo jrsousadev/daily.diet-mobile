@@ -7,7 +7,7 @@ import * as S from "./styles";
 
 type CardPercentageProps = {
   onOpen?: () => void;
-  percentage: number;
+  percentage: number | string;
   isFullscreen?: boolean;
 };
 
