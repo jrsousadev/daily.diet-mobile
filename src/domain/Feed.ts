@@ -50,14 +50,16 @@ export const MeasureDiet = (data: FeedDTO[]) => {
     if (feed.insideDiet) {
       inDiet.push(1);
     } else {
-      notDiet.push(1)
+      notDiet.push(1);
     }
   });
 
-  const percentage = inDiet.length / totalFeeds * 100;
+  const percentage = (inDiet.length / totalFeeds) * 100;
+
+  const isNan = isNaN(percentage);
 
   return {
-    percentage,
+    percentage: isNan ? 0 : percentage,
     notDiet: notDiet.length,
     inDiet: inDiet.length,
   };
