@@ -7,7 +7,7 @@ import { useTheme } from "styled-components/native";
 import * as S from "./styles";
 
 export function Static() {
-  const theme = useTheme();
+  const { COLORS } = useTheme();
 
   const infosDiet = MeasureDiet(DATA);
 
@@ -15,7 +15,8 @@ export function Static() {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: theme.COLORS.GREEN_200,
+        backgroundColor:
+          infosDiet.percentage <= 50 ? COLORS.RED_200 : COLORS.GREEN_200,
       }}
     >
       <CardPercentage percentage={infosDiet.percentage} isFullscreen={true} />
@@ -29,20 +30,24 @@ export function Static() {
           value={3}
         />
 
-        <CardInfo title="refeições registradas" color="SECONDARY" value={DATA.length} />
+        <CardInfo
+          title="refeições registradas"
+          color="SECONDARY"
+          value={DATA.length}
+        />
 
         <S.ContainerTwoCard>
           <CardInfo
             title="refeições dentro da dieta"
             color="GREEN"
-            style={{flex: 1, marginRight: 5}}
+            style={{ flex: 1, marginRight: 5 }}
             value={infosDiet.inDiet}
           />
 
           <CardInfo
             title="refeições fora da dieta"
             color="RED"
-            style={{flex: 1, marginLeft: 5}}
+            style={{ flex: 1, marginLeft: 5 }}
             value={infosDiet.notDiet}
           />
         </S.ContainerTwoCard>

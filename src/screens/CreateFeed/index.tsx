@@ -5,47 +5,73 @@ import { HeaderBack } from "@components/HeaderBack";
 import { useTheme } from "styled-components/native";
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
-
+import { CustomSelect } from "@components/CustomSelect";
+import { useState } from "react";
+import DatePicker from "react-native-date-picker";
+import { DatePickerInput } from "@components/DatePickerInput";
 
 export function CreateFeed() {
-    const theme = useTheme();
+  const theme = useTheme();
 
-    return (
-        <SafeAreaView style={{
-            flex: 1,
-            backgroundColor: theme.COLORS.GRAY_700,
-        }}>
-            <HeaderBack title="Nova refeição" />
-            <S.Container>
-                <Input label="Nome" />
-                <Input
-                    styleLabel={{ marginTop: 20 }}
-                    label="Descrição"
-                    textAlignVertical="top"
-                    style={{ maxHeight: 150 }}
-                    numberOfLines={4}
-                    multiline
-                    editable
-                />
+  const [isInsideDiet, setIsInsideDiet] = useState<boolean>();
 
-                <S.ContainerFlexWithGap>
-                    <Input label="Data" styleContainer={{ flex: 1, marginRight: 5 }} />
-                    <Input label="Hora" styleContainer={{ flex: 1, marginLeft: 5 }} />
-                </S.ContainerFlexWithGap>
+  return (
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: theme.COLORS.GRAY_700,
+      }}
+    >
+      <DatePickerInput />
 
-                <S.ContainerFlexWithGap>
+      <HeaderBack title="Nova refeição" />
+      <S.Container>
+        <Input label="Nome" />
+        <Input
+          styleLabel={{ marginTop: 20 }}
+          label="Descrição"
+          textAlignVertical="top"
+          style={{ maxHeight: 150 }}
+          numberOfLines={4}
+          multiline
+          editable
+        />
 
-                </S.ContainerFlexWithGap>
-            </S.Container>
-            <Button 
-                title="Cadastrar refeição" 
-                style={{ 
-                    position: "absolute", 
-                    bottom: 15, 
-                    maxWidth: '90%',
-                    left: 23,
-                }} 
-            />
-        </SafeAreaView>
-    )
+        <S.ContainerFlexTwoInputs>
+          <Input
+            label="Data"
+            isTouchable
+            styleContainer={{ flex: 1, marginRight: 5 }}
+          />
+          <Input
+            label="Hora"
+            isTouchable
+            styleContainer={{ flex: 1, marginLeft: 5 }}
+          />
+        </S.ContainerFlexTwoInputs>
+
+        <S.Text>Está dentro da dieta?</S.Text>
+        <S.ConntainerFlexTwoSelects>
+          <CustomSelect
+            selected={isInsideDiet === true}
+            title={"Sim"}
+            type={"PRIMARY"}
+            onPress={() => setIsInsideDiet(true)}
+            styleContainer={{ marginRight: 5 }}
+          />
+          <CustomSelect
+            selected={isInsideDiet === false}
+            title={"Não"}
+            type={"SECONDARY"}
+            onPress={() => setIsInsideDiet(false)}
+            styleContainer={{ marginLeft: 5 }}
+          />
+        </S.ConntainerFlexTwoSelects>
+
+        <S.ContainerFlexEndButton>
+          <Button title="Cadastrar refeição" />
+        </S.ContainerFlexEndButton>
+      </S.Container>
+    </SafeAreaView>
+  );
 }

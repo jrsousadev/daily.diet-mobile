@@ -24,6 +24,8 @@ export const ButtonBack = styled.TouchableOpacity`
     position: absolute;
     top: 25px;
     left: 20px;
+
+    z-index: 2;
 `;
 
 export const IconBack = styled(ArrowLeft).attrs(({}) => ({

@@ -15,9 +15,6 @@ export const Label = styled.Text`
     padding-bottom: 5px;
 `
 
-export const Touchable = styled.TouchableOpacity`
-`
-
 export const InputContainer = styled(TextInput)`
     ${({ theme }) => css`
         background-color: ${theme.COLORS.WHITE};
