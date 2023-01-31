@@ -20,6 +20,10 @@ export function HomeScreen() {
 
   const feedsFormatted = formattedFeedsToDate(DATA);
   const infosDiet = MeasureDiet(DATA);
+  
+  const handleOpenCreateFeed = () => {
+    navigate.navigate("createFeed")
+  }
 
   return (
     <SafeAreaView
@@ -51,6 +55,7 @@ export function HomeScreen() {
         <Button
           icon={<Plus size={32} color="white" style={{ marginRight: 10 }} />}
           title="Nova refeição"
+          onPress={handleOpenCreateFeed}
         />
 
         <SectionList
