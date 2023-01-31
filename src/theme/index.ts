@@ -12,6 +12,7 @@ export default {
 
     GRAY_200: "#EFF0F0",
     GRAY_500: "#DDDEDF",
+    GRAY_700: "#B9BBBC",
 
     RED: "#BF3B44",
     RED_200: "#F4E6E7",
