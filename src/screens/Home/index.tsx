@@ -15,8 +15,6 @@ import { FeedDTO, formattedFeedsToDate, MeasureDiet } from "../../domain/Feed";
 import { useCallback, useState } from "react";
 import { getAllFeeds } from "@storage/feed/getAllFeeds";
 
-// import AsyncStorage from "@react-native-async-storage/async-storage";
-
 export function HomeScreen() {
   const [feeds, setFeeds] = useState<FeedDTO[] | []>([]);
 
@@ -37,6 +35,14 @@ export function HomeScreen() {
       setFeeds(data);
     } catch (err) {
       Alert.alert("Refeições", "Não foi possível carregar as refeições");
+    }
+  };
+
+  const handleGetOneFeed = async (id: string) => {
+    try {
+      navigate.navigate("viewFeed", { id });
+    } catch (err) {
+      Alert.alert("Refeição", "Houve um erro ao selecionar a refeição");
     }
   };
 
@@ -87,10 +93,13 @@ export function HomeScreen() {
               feed={item.name}
               hour={moment(item.createdAt).format("HH:mm")}
               insideDiet={item.insideDiet}
+              onPress={() => handleGetOneFeed(item.id)}
             />
           )}
           renderSectionHeader={({ section: { date } }) => (
-            <S.TitleSectionList>{moment(date).format("DD.MM.YYYY")}</S.TitleSectionList>
+            <S.TitleSectionList>
+              {moment(date).format("DD.MM.YYYY")}
+            </S.TitleSectionList>
           )}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 30 }}

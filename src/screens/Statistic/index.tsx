@@ -47,7 +47,7 @@ export function Static() {
         <CardInfo
           title="melhor sequência de pratos dentro da dieta"
           color="SECONDARY"
-          value={3}
+          value={infosDiet.sequence}
         />
 
         <CardInfo
