@@ -6,24 +6,44 @@ import moment from "moment";
 import { CardPercentage } from "@components/CardPercentage";
 import { Button } from "@components/Button";
 import { Plus } from "phosphor-react-native";
-import { SectionList } from "react-native";
+import { Alert, SectionList } from "react-native";
 import { CardFeed } from "@components/CardFeed";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
-import { DATA } from "@storage/Feeds";
-import { formattedFeedsToDate, MeasureDiet } from "../../domain/Feed";
+import { FeedDTO, formattedFeedsToDate, MeasureDiet } from "../../domain/Feed";
+import { useCallback, useState } from "react";
+import { getAllFeeds } from "@storage/feed/getAllFeeds";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function HomeScreen() {
+  const [feeds, setFeeds] = useState<FeedDTO[] | []>([]);
+
   const theme = useTheme();
   const navigate = useNavigation();
 
-  const feedsFormatted = formattedFeedsToDate(DATA);
-  const infosDiet = MeasureDiet(DATA);
-  
+  const feedsFormatted = formattedFeedsToDate(feeds);
+  const infosDiet = MeasureDiet(feeds);
+
   const handleOpenCreateFeed = () => {
-    navigate.navigate("createFeed")
-  }
+    navigate.navigate("createFeed");
+  };
+
+  const fetchFeeds = async () => {
+    try {
+      const data = await getAllFeeds();
+
+      setFeeds(data);
+    } catch (err) {
+      Alert.alert("Refeições", "Não foi possível carregar as refeições");
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchFeeds()
+    }, [])
+  );
 
   return (
     <SafeAreaView

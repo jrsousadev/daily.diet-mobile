@@ -1,15 +1,35 @@
 import { CardInfo } from "@components/CardInfo";
 import { CardPercentage } from "@components/CardPercentage";
-import { MeasureDiet } from "@domain/Feed";
-import { DATA } from "@storage/Feeds";
+import { FeedDTO, MeasureDiet } from "@domain/Feed";
+import { getAllFeeds } from "@storage/feed/getAllFeeds";
+import { useEffect, useMemo, useState } from "react";
+import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 import * as S from "./styles";
 
 export function Static() {
+  const [feeds, setFeeds] = useState<FeedDTO[] | []>([]);
+
   const { COLORS } = useTheme();
 
-  const infosDiet = MeasureDiet(DATA);
+  const infosDiet = useMemo(() => {
+    return MeasureDiet(feeds);
+  }, [feeds]);
+
+  const fetchFeeds = async () => {
+    try {
+      const data = await getAllFeeds();
+
+      setFeeds(data);
+    } catch (err) {
+      Alert.alert("Refeições", "Não foi possível carregar as refeições");
+    }
+  };
+
+  useEffect(() => {
+    fetchFeeds();
+  }, []);
 
   return (
     <SafeAreaView
@@ -33,7 +53,7 @@ export function Static() {
         <CardInfo
           title="refeições registradas"
           color="SECONDARY"
-          value={DATA.length}
+          value={feeds.length}
         />
 
         <S.ContainerTwoCard>
