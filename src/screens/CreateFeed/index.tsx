@@ -49,7 +49,7 @@ export function CreateFeed() {
       if (!hour) {
         return Alert.alert(
           "Criar refeição",
-          "Para continuar, insira a hora da refaição"
+          "Para continuar, insira a hora da refeição"
         );
       }
 
@@ -61,7 +61,7 @@ export function CreateFeed() {
       };
 
       await createFeed(newFeed);
-      navigate.navigate("home");
+      navigate.navigate("feedbackDiet", { inDiet: isInsideDiet });
     } catch (err) {
       Alert.alert("Criar refeição", "Não foi possível criar a refeição");
     }
@@ -76,7 +76,13 @@ export function CreateFeed() {
     >
       <HeaderBack title="Nova refeição" />
       <S.Container>
-        <Input label="Nome" value={name} onChangeText={setName} />
+        <Input
+          label="Nome"
+          value={name}
+          onChangeText={setName}
+          onSubmitEditing={handleAddFeed}
+          returnKeyType="done"
+        />
         <Input
           styleLabel={{ marginTop: 20 }}
           label="Descrição"
@@ -86,6 +92,8 @@ export function CreateFeed() {
           multiline
           value={description}
           onChangeText={setDescription}
+          onSubmitEditing={handleAddFeed}
+          returnKeyType="done"
         />
 
         <S.ContainerFlexTwoInputs>
@@ -94,12 +102,16 @@ export function CreateFeed() {
             styleContainer={{ flex: 1, marginRight: 5 }}
             value={date}
             onChangeText={setDate}
+            onSubmitEditing={handleAddFeed}
+            returnKeyType="done"
           />
           <Input
             label="Hora"
             styleContainer={{ flex: 1, marginLeft: 5 }}
             value={hour}
             onChangeText={setHour}
+            onSubmitEditing={handleAddFeed}
+            returnKeyType="done"
           />
         </S.ContainerFlexTwoInputs>
 
