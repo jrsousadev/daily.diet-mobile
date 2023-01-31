@@ -1,6 +1,7 @@
 import moment from "moment";
 
 export type FeedDTO = {
+  id: string;
   createdAt: Date;
   name: string;
   description: string;
@@ -35,6 +36,15 @@ export const formattedFeedsToDate = (data: FeedDTO[]) => {
       }
     });
 
+    const sortedArrayFeeds = object.data.sort((a: FeedDTO, b: FeedDTO) => {
+      const dateA: any = new Date(a.createdAt);
+      const dateB: any = new Date(b.createdAt);
+  
+      return dateB - dateA;
+    });
+
+    object.data = sortedArrayFeeds;
+
     arrayFormatted.push(object);
   });
 
@@ -46,6 +56,22 @@ export const formattedFeedsToDate = (data: FeedDTO[]) => {
   });
 
   return sortedArray;
+};
+
+const findLongestSequence = (data: FeedDTO[]) => {
+  let maxSequence = 0;
+  let currentSequence = 0;
+
+  for (const item of data) {
+    if (item.insideDiet) {
+      currentSequence++;
+    } else {
+      maxSequence = Math.max(maxSequence, currentSequence);
+      currentSequence = 0;
+    }
+  }
+
+  return Math.max(maxSequence, currentSequence);
 };
 
 export const MeasureDiet = (data: FeedDTO[]) => {
@@ -62,11 +88,13 @@ export const MeasureDiet = (data: FeedDTO[]) => {
   });
 
   const percentage = (inDiet.length / totalFeeds) * 100;
-
   const isNan = isNaN(percentage);
+
+  const sequenceDiet = findLongestSequence(data);
 
   return {
     percentage: isNan ? 0 : percentage.toFixed(2),
+    sequence: sequenceDiet,
     notDiet: notDiet.length,
     inDiet: inDiet.length,
   };

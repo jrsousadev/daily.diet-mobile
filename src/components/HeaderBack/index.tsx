@@ -3,9 +3,10 @@ import * as S from "./styles";
 
 type Props = {
   title: string;
+  color?: "GREEN" | "RED" | "SECONDARY";
 };
 
-export function HeaderBack({ title }: Props) {
+export function HeaderBack({ color = "SECONDARY", title }: Props) {
   const navigate = useNavigation();
 
   const handleBack = () => {
@@ -13,7 +14,7 @@ export function HeaderBack({ title }: Props) {
   };
 
   return (
-    <S.Container>
+    <S.Container color={color}>
       <S.ButtonBack onPress={handleBack}>
         <S.IconBack />
       </S.ButtonBack>
