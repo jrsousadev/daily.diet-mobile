@@ -9,7 +9,7 @@ export async function getAllFeeds() {
 
     const feeds: FeedDTO[] = storage ? JSON.parse(storage) : [];
 
-    return feeds.reverse();
+    return feeds;
   } catch (err) {
     throw err;
   }

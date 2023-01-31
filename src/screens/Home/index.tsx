@@ -14,7 +14,8 @@ import { useTheme } from "styled-components/native";
 import { FeedDTO, formattedFeedsToDate, MeasureDiet } from "../../domain/Feed";
 import { useCallback, useState } from "react";
 import { getAllFeeds } from "@storage/feed/getAllFeeds";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function HomeScreen() {
   const [feeds, setFeeds] = useState<FeedDTO[] | []>([]);
@@ -41,7 +42,7 @@ export function HomeScreen() {
 
   useFocusEffect(
     useCallback(() => {
-      fetchFeeds()
+      fetchFeeds();
     }, [])
   );
 
@@ -88,8 +89,8 @@ export function HomeScreen() {
               insideDiet={item.insideDiet}
             />
           )}
-          renderSectionHeader={({ section: { title } }) => (
-            <S.TitleSectionList>{title}</S.TitleSectionList>
+          renderSectionHeader={({ section: { date } }) => (
+            <S.TitleSectionList>{moment(date).format("DD.MM.YYYY")}</S.TitleSectionList>
           )}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 30 }}
