@@ -1,4 +1,5 @@
 import * as S from "./styles";
+import moment from "moment";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { HeaderBack } from "@components/HeaderBack";
@@ -7,13 +8,64 @@ import { Input } from "@components/Input";
 import { Button } from "@components/Button";
 import { CustomSelect } from "@components/CustomSelect";
 import { useState } from "react";
-import DatePicker from "react-native-date-picker";
-import { DatePickerInput } from "@components/DatePickerInput";
+import { Alert } from "react-native";
+import { FeedDTO } from "@domain/Feed";
+import { createFeed } from "@storage/feed/createFeed";
+import { useNavigation } from "@react-navigation/native";
 
 export function CreateFeed() {
   const theme = useTheme();
+  const navigate = useNavigation();
 
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState(moment(new Date()).format("YYYY-MM-DD"));
+  const [hour, setHour] = useState("");
   const [isInsideDiet, setIsInsideDiet] = useState<boolean>();
+
+  const handleAddFeed = async () => {
+    try {
+      if (typeof isInsideDiet === "undefined") {
+        return Alert.alert(
+          "Criar refeição",
+          "Para continuar, marque a opção se está dentro da dieta."
+        );
+      }
+
+      if (!name) {
+        return Alert.alert(
+          "Criar refeição",
+          "Para continuar, insira o nome da refeição"
+        );
+      }
+
+      if (!date) {
+        return Alert.alert(
+          "Criar refeição",
+          "Para continuar, insira o dia da refeição"
+        );
+      }
+
+      if (!hour) {
+        return Alert.alert(
+          "Criar refeição",
+          "Para continuar, insira a hora da refaição"
+        );
+      }
+
+      const newFeed: FeedDTO = {
+        name,
+        description,
+        insideDiet: isInsideDiet,
+        createdAt: new Date(`${date}T${hour}:00`),
+      };
+
+      await createFeed(newFeed);
+      navigate.navigate("home");
+    } catch (err) {
+      Alert.alert("Criar refeição", "Não foi possível criar a refeição");
+    }
+  };
 
   return (
     <SafeAreaView
@@ -22,11 +74,9 @@ export function CreateFeed() {
         backgroundColor: theme.COLORS.GRAY_700,
       }}
     >
-      <DatePickerInput />
-
       <HeaderBack title="Nova refeição" />
       <S.Container>
-        <Input label="Nome" />
+        <Input label="Nome" value={name} onChangeText={setName} />
         <Input
           styleLabel={{ marginTop: 20 }}
           label="Descrição"
@@ -34,24 +84,27 @@ export function CreateFeed() {
           style={{ maxHeight: 150 }}
           numberOfLines={4}
           multiline
-          editable
+          value={description}
+          onChangeText={setDescription}
         />
 
         <S.ContainerFlexTwoInputs>
           <Input
             label="Data"
-            isTouchable
             styleContainer={{ flex: 1, marginRight: 5 }}
+            value={date}
+            onChangeText={setDate}
           />
           <Input
             label="Hora"
-            isTouchable
             styleContainer={{ flex: 1, marginLeft: 5 }}
+            value={hour}
+            onChangeText={setHour}
           />
         </S.ContainerFlexTwoInputs>
 
         <S.Text>Está dentro da dieta?</S.Text>
-        <S.ConntainerFlexTwoSelects>
+        <S.ContainerFlexTwoSelects>
           <CustomSelect
             selected={isInsideDiet === true}
             title={"Sim"}
@@ -66,10 +119,10 @@ export function CreateFeed() {
             onPress={() => setIsInsideDiet(false)}
             styleContainer={{ marginLeft: 5 }}
           />
-        </S.ConntainerFlexTwoSelects>
+        </S.ContainerFlexTwoSelects>
 
         <S.ContainerFlexEndButton>
-          <Button title="Cadastrar refeição" />
+          <Button title="Cadastrar refeição" onPress={handleAddFeed} />
         </S.ContainerFlexEndButton>
       </S.Container>
     </SafeAreaView>
