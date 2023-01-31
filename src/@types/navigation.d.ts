@@ -6,6 +6,9 @@ export declare global {
       createFeed: undefined;
       feedbackDiet: {
         inDiet: boolean;
+      },
+      viewFeed: {
+        id: string;
       }
     }
   }
